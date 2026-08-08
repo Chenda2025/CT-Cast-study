@@ -6,19 +6,20 @@
   <title>Compression Trade-Offs — Case Study 2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;500;700&family=Fraunces:opsz,wght@9..144,560;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
   <script src="/static/i18n.js"></script>
 </head>
 <body>
-  <div class="bg"></div>
+  <div class="bg" aria-hidden="true"></div>
+
   <header class="top">
     <div class="brand">
       <span class="mark">CT</span>
       <div>
+        <p class="eyebrow">Case Study 2</p>
         <h1 data-i18n="app.title">Compression Trade-Offs</h1>
-        <p class="tag" data-i18n="app.tag">CPU vs Disk I/O balance on a single machine</p>
       </div>
     </div>
     <div class="top-right">
@@ -28,131 +29,193 @@
     </div>
   </header>
 
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="tag" data-i18n="app.tag">CPU vs Disk I/O balance on a single machine</p>
+      <p class="hero-lead" data-i18n="hero.lead">
+        Configure compression, run benchmarks, and watch where CPU cost meets disk savings.
+      </p>
+    </div>
+    <ol class="hero-flow" aria-label="Workflow">
+      <li><span>1</span><em data-i18n="flow.1">Download</em></li>
+      <li><span>2</span><em data-i18n="flow.2">Configure</em></li>
+      <li><span>3</span><em data-i18n="flow.3">Benchmark</em></li>
+      <li><span>4</span><em data-i18n="flow.4">Decide</em></li>
+    </ol>
+  </section>
+
   <main class="layout">
-    <section class="panel controls">
+    <aside class="rail panel">
       <h2 data-i18n="panel.configure">Configure ingestion</h2>
-      <label><span data-i18n="field.format">Format</span>
-        <select id="fmt">
-          {% for f in formats %}
-          <option value="{{ f }}" {% if f == 'parquet' %}selected{% endif %}>{{ f }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label><span data-i18n="field.codec">Codec</span>
-        <select id="codec">
-          {% for c in codecs %}
-          <option value="{{ c }}" {% if c == 'zstd' %}selected{% endif %}>{{ c }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label><span data-i18n="field.level">Zstd level</span> <strong id="levelVal">5</strong>
-        <input type="range" id="level" min="1" max="22" value="5" />
-      </label>
-      <label><span data-i18n="field.threads">Threads</span>
-        <input type="number" id="threads" min="1" max="16" value="4" />
-      </label>
-      <label><span data-i18n="field.maxRows">Max rows</span>
-        <input type="number" id="maxRows" min="1000" max="500000" step="1000" value="80000" />
-      </label>
-      <div class="actions">
-        <button id="btnDownload" type="button" data-i18n="btn.download">Download dataset</button>
-        <button id="btnIngest" type="button" class="primary" data-i18n="btn.ingest">Run ingest</button>
-        <button id="btnMatrix" type="button" data-i18n="btn.matrix">Codec matrix</button>
-        <button id="btnSweep" type="button" data-i18n="btn.sweep">Zstd sweep</button>
-        <button id="btnFull" type="button" class="accent" data-i18n="btn.full">Full benchmark</button>
+
+      <div class="field-grid">
+        <label><span data-i18n="field.format">Format</span>
+          <select id="fmt">
+            {% for f in formats %}
+            <option value="{{ f }}" {% if f == 'parquet' %}selected{% endif %}>{{ f }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label><span data-i18n="field.codec">Codec</span>
+          <select id="codec">
+            {% for c in codecs %}
+            <option value="{{ c }}" {% if c == 'zstd' %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </label>
       </div>
+
+      <label class="level-label">
+        <span><span data-i18n="field.level">Zstd level</span> <strong id="levelVal">5</strong></span>
+        <input type="range" id="level" min="1" max="22" value="5" />
+        <span class="level-ends"><i>1</i><i>22</i></span>
+      </label>
+
+      <div class="field-grid">
+        <label><span data-i18n="field.threads">Threads</span>
+          <input type="number" id="threads" min="1" max="16" value="4" />
+        </label>
+        <label><span data-i18n="field.maxRows">Max rows</span>
+          <input type="number" id="maxRows" min="1000" max="500000" step="1000" value="80000" />
+        </label>
+      </div>
+
+      <div class="action-block">
+        <p class="action-title" data-i18n="actions.setup">Setup</p>
+        <div class="actions">
+          <button id="btnDownload" type="button" data-i18n="btn.download">Download dataset</button>
+          <button id="btnIngest" type="button" class="primary" data-i18n="btn.ingest">Run ingest</button>
+        </div>
+      </div>
+
+      <div class="action-block">
+        <p class="action-title" data-i18n="actions.bench">Benchmarks</p>
+        <div class="actions">
+          <button id="btnMatrix" type="button" data-i18n="btn.matrix">Codec matrix</button>
+          <button id="btnSweep" type="button" data-i18n="btn.sweep">Zstd sweep</button>
+          <button id="btnFull" type="button" class="accent" data-i18n="btn.full">Full benchmark</button>
+        </div>
+      </div>
+
       <label class="check">
         <input type="checkbox" id="zstdFull" />
         <span data-i18n="check.zstdFull">Full Zstd levels 1–22 (slower)</span>
       </label>
       <p id="message" class="message" data-i18n="msg.ready">Ready — download a dataset, then ingest or benchmark.</p>
       <p id="error" class="error" hidden></p>
-    </section>
+    </aside>
 
-    <section class="panel recommend" id="recommendBox">
-      <h2 data-i18n="panel.recommend">Recommendation</h2>
-      <p id="recommendText" data-i18n="recommend.empty">Run a benchmark to get a clear recommendation.</p>
-    </section>
+    <div class="workspace">
+      <section class="panel recommend reveal" id="recommendBox">
+        <div class="section-head">
+          <h2 data-i18n="panel.recommend">Recommendation</h2>
+          <span class="badge" data-i18n="badge.auto">Auto</span>
+        </div>
+        <p id="recommendText" data-i18n="recommend.empty">Run a benchmark to get a clear recommendation.</p>
+      </section>
 
-    <section class="panel charts">
-      <h2 data-i18n="panel.live">Live metrics</h2>
-      <div class="chart-grid">
-        <canvas id="cpuChart"></canvas>
-        <canvas id="diskChart"></canvas>
-        <canvas id="thrChart"></canvas>
-      </div>
-    </section>
+      <section class="panel path reveal">
+        <div class="section-head">
+          <h2 data-i18n="panel.path">Data path</h2>
+        </div>
+        <ol class="path-steps">
+          <li>
+            <span class="step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                <ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6" /><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
+              </svg>
+            </span>
+            <strong data-i18n="path.1">Compressed disk</strong>
+            <span class="muted" data-i18n="path.1d">Parquet / Feather / Blosc2 / Zarr</span>
+          </li>
+          <li class="path-arrow" aria-hidden="true">→</li>
+          <li>
+            <span class="step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="7" y="7" width="10" height="10" rx="1.5" /><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" />
+              </svg>
+            </span>
+            <strong data-i18n="path.2">CPU decompress</strong>
+            <span class="muted" data-i18n="path.2d">Snappy, LZ4, Zstd, Gzip, Brotli</span>
+          </li>
+          <li class="path-arrow" aria-hidden="true">→</li>
+          <li>
+            <span class="step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="4" width="4" height="16" rx="1" /><rect x="10" y="4" width="4" height="16" rx="1" /><rect x="17" y="4" width="4" height="16" rx="1" />
+              </svg>
+            </span>
+            <strong data-i18n="path.3">In-memory columns</strong>
+            <span class="muted" data-i18n="path.3d">Apache Arrow / Pandas</span>
+          </li>
+          <li class="path-arrow" aria-hidden="true">→</li>
+          <li>
+            <span class="step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 20V10M9 20V4M15 20v-7M21 20V7" />
+              </svg>
+            </span>
+            <strong data-i18n="path.4">Process</strong>
+            <span class="muted" data-i18n="path.4d">filter / aggregate (column subset)</span>
+          </li>
+        </ol>
+      </section>
 
-    <section class="panel balance">
-      <h2 data-i18n="panel.balance">Balance point (CPU% vs disk-wait%)</h2>
-      <canvas id="balanceChart" height="120"></canvas>
-    </section>
+      <section class="panel charts reveal">
+        <div class="section-head">
+          <h2 data-i18n="panel.live">Live metrics</h2>
+        </div>
+        <div class="chart-grid">
+          <figure class="chart-tile">
+            <figcaption data-i18n="chart.cpu">CPU %</figcaption>
+            <canvas id="cpuChart"></canvas>
+          </figure>
+          <figure class="chart-tile">
+            <figcaption data-i18n="chart.disk">Disk wait %</figcaption>
+            <canvas id="diskChart"></canvas>
+          </figure>
+          <figure class="chart-tile">
+            <figcaption data-i18n="chart.thr">Throughput MB/s</figcaption>
+            <canvas id="thrChart"></canvas>
+          </figure>
+        </div>
+      </section>
 
-    <section class="panel results">
-      <h2 data-i18n="panel.results">Results</h2>
-      <div class="table-wrap">
-        <table id="resultsTable">
-          <thead>
-            <tr>
-              <th data-i18n="th.name">Name</th>
-              <th data-i18n="th.codec">Codec</th>
-              <th data-i18n="th.level">Level</th>
-              <th data-i18n="th.format">Format</th>
-              <th data-i18n="th.ratio">Ratio</th>
-              <th data-i18n="th.readproc">Read+Proc (s)</th>
-              <th data-i18n="th.total">Total (s)</th>
-              <th data-i18n="th.mbs">MB/s</th>
-              <th data-i18n="th.cpu">CPU%</th>
-              <th data-i18n="th.diskwait">Disk wait%</th>
-              <th data-i18n="th.rss">Peak RSS MB</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
+      <section class="panel balance reveal">
+        <div class="section-head">
+          <h2 data-i18n="panel.balance">Balance point (CPU% vs disk-wait%)</h2>
+        </div>
+        <div class="balance-frame">
+          <canvas id="balanceChart" height="140"></canvas>
+        </div>
+      </section>
 
-    <section class="panel path">
-      <h2 data-i18n="panel.path">Data path</h2>
-      <ol class="path-steps">
-        <li>
-          <span class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6" /><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
-            </svg>
-          </span>
-          <strong data-i18n="path.1">Compressed disk</strong>
-          <span class="muted" data-i18n="path.1d">Parquet / Feather / Blosc2 / Zarr</span>
-        </li>
-        <li>
-          <span class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="7" y="7" width="10" height="10" rx="1.5" /><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" />
-            </svg>
-          </span>
-          <strong data-i18n="path.2">CPU decompress</strong>
-          <span class="muted" data-i18n="path.2d">Snappy, LZ4, Zstd, Gzip, Brotli</span>
-        </li>
-        <li>
-          <span class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="3" y="4" width="4" height="16" rx="1" /><rect x="10" y="4" width="4" height="16" rx="1" /><rect x="17" y="4" width="4" height="16" rx="1" />
-            </svg>
-          </span>
-          <strong data-i18n="path.3">In-memory columns</strong>
-          <span class="muted" data-i18n="path.3d">Apache Arrow / Pandas</span>
-        </li>
-        <li>
-          <span class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M3 20V10M9 20V4M15 20v-7M21 20V7" />
-            </svg>
-          </span>
-          <strong data-i18n="path.4">Process</strong>
-          <span class="muted" data-i18n="path.4d">filter / aggregate (column subset)</span>
-        </li>
-      </ol>
-    </section>
+      <section class="panel results reveal">
+        <div class="section-head">
+          <h2 data-i18n="panel.results">Results</h2>
+        </div>
+        <div class="table-wrap">
+          <table id="resultsTable">
+            <thead>
+              <tr>
+                <th data-i18n="th.name">Name</th>
+                <th data-i18n="th.codec">Codec</th>
+                <th data-i18n="th.level">Level</th>
+                <th data-i18n="th.format">Format</th>
+                <th data-i18n="th.ratio">Ratio</th>
+                <th data-i18n="th.readproc">Read+Proc (s)</th>
+                <th data-i18n="th.total">Total (s)</th>
+                <th data-i18n="th.mbs">MB/s</th>
+                <th data-i18n="th.cpu">CPU%</th>
+                <th data-i18n="th.diskwait">Disk wait%</th>
+                <th data-i18n="th.rss">Peak RSS MB</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
