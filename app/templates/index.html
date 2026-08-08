@@ -168,15 +168,15 @@
         <div class="chart-grid">
           <figure class="chart-tile">
             <figcaption data-i18n="chart.cpu">CPU %</figcaption>
-            <canvas id="cpuChart"></canvas>
+            <div class="chart-canvas"><canvas id="cpuChart"></canvas></div>
           </figure>
           <figure class="chart-tile">
             <figcaption data-i18n="chart.disk">Disk wait %</figcaption>
-            <canvas id="diskChart"></canvas>
+            <div class="chart-canvas"><canvas id="diskChart"></canvas></div>
           </figure>
           <figure class="chart-tile">
             <figcaption data-i18n="chart.thr">Throughput MB/s</figcaption>
-            <canvas id="thrChart"></canvas>
+            <div class="chart-canvas"><canvas id="thrChart"></canvas></div>
           </figure>
         </div>
       </section>
@@ -186,7 +186,7 @@
           <h2 data-i18n="panel.balance">Balance point (CPU% vs disk-wait%)</h2>
         </div>
         <div class="balance-frame">
-          <canvas id="balanceChart" height="140"></canvas>
+          <div class="chart-canvas chart-canvas--wide"><canvas id="balanceChart"></canvas></div>
         </div>
       </section>
 

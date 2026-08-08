@@ -6,16 +6,26 @@ const state = {
 
 const chartOpts = {
   responsive: true,
+  maintainAspectRatio: false,
   animation: false,
+  layout: { padding: { top: 4, right: 6, bottom: 2, left: 2 } },
   scales: {
     x: { display: false },
     y: {
       beginAtZero: true,
-      ticks: { color: "#9bb5a8" },
+      ticks: {
+        color: "#9bb5a8",
+        maxTicksLimit: 5,
+        font: { size: 10 },
+      },
       grid: { color: "rgba(62,207,142,0.12)" },
     },
   },
-  plugins: { legend: { labels: { color: "#e8f2ec" } } },
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
 };
 
 function makeLine(canvasId, labelKey, color) {
@@ -69,9 +79,19 @@ const balanceChart = new Chart($("balanceChart").getContext("2d"), {
   },
   options: {
     ...chartOpts,
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: "#e8f2ec",
+          boxWidth: 10,
+          font: { size: 11 },
+        },
+      },
+    },
     scales: {
       x: {
-        ticks: { color: "#9bb5a8" },
+        ticks: { color: "#9bb5a8", maxTicksLimit: 10, font: { size: 10 } },
         grid: { color: "rgba(62,207,142,0.08)" },
       },
       y: chartOpts.scales.y,
