@@ -25,348 +25,297 @@
 
   <main id="deck">
 
-    <!-- 1 COVER -->
     <section class="slide cover">
       <span class="kicker" data-i18n="sl.kicker">Case Study 2</span>
       <h1 data-i18n="sl1.title">Balancing Compression Trade-Offs</h1>
       <p class="lead" data-i18n="sl1.sub">For high-speed data processing on a single machine</p>
-      <img class="hero" src="/static/img/cover.png" alt="CPU vs disk balance illustration" />
+      <img class="hero" src="/static/img/cover.jpg" alt="CPU vs disk balance" />
       <p class="hint" data-i18n="sl.hint">Use ← → arrow keys or the buttons below</p>
     </section>
 
-    <!-- 2 CORE IDEA -->
     <section class="slide">
-      <h2><span class="ico">
-        <svg viewBox="0 0 24 24"><path d="M12 3v18M4 7h16M6 7l-3 6a3 3 0 0 0 6 0zM18 7l-3 6a3 3 0 0 0 6 0z"/></svg>
-      </span><span data-i18n="sl2.title">Core idea</span></h2>
-      <p class="lead" data-i18n="sl2.lead">Compression saves space but costs CPU time.</p>
-      <div class="two">
-        <div class="card good">
-          <span class="ico big"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
-          <h3 data-i18n="sl2.help">Compression helps</h3>
-          <p data-i18n="sl2.helpd">Smaller files mean less disk I/O and a smaller memory footprint.</p>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v18M4 7h16M6 7l-3 6a3 3 0 0 0 6 0zM18 7l-3 6a3 3 0 0 0 6 0z"/></svg></span><span data-i18n="sl2.title">Core idea</span></h2>
+          <p class="lead" data-i18n="sl2.lead">Compression saves space but costs CPU time.</p>
+          <div class="stack">
+            <div class="card good"><h3 data-i18n="sl2.help">Compression helps</h3><p data-i18n="sl2.helpd">Smaller files mean less disk I/O and a smaller memory footprint.</p></div>
+            <div class="card warn"><h3 data-i18n="sl2.cost">Compression costs</h3><p data-i18n="sl2.costd">The CPU must decompress every block before the data can be used.</p></div>
+          </div>
+          <div class="callout" data-i18n="sl2.goal">Goal: find the balance point where I/O savings beat decode cost.</div>
         </div>
-        <div class="card warn">
-          <span class="ico big"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span>
-          <h3 data-i18n="sl2.cost">Compression costs</h3>
-          <p data-i18n="sl2.costd">The CPU must decompress every block before the data can be used.</p>
-        </div>
-      </div>
-      <div class="callout" data-i18n="sl2.goal">Goal: find the balance point where I/O savings beat decode cost.</div>
-    </section>
-
-    <!-- 3 TWO BOTTLENECKS -->
-    <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16l-6 8v6l-4 2v-8z"/></svg></span><span data-i18n="sl3.title">Two competing bottlenecks</span></h2>
-      <div class="two">
-        <div class="card">
-          <h3 data-i18n="sl3.cpu">CPU bottleneck</h3>
-          <p data-i18n="sl3.cpud">Too much decoding work — the processor cannot keep up.</p>
-          <div class="bar"><span style="width:88%"></span></div>
-        </div>
-        <div class="card">
-          <h3 data-i18n="sl3.disk">Disk I/O bottleneck</h3>
-          <p data-i18n="sl3.diskd">Reading large uncompressed files is slow.</p>
-          <div class="bar amber"><span style="width:82%"></span></div>
-        </div>
-      </div>
-      <div class="balance-viz">
-        <div class="bv-line"></div>
-        <div class="bv-point"><span data-i18n="sl3.point">Balance point</span></div>
+        <figure class="viz"><img src="/static/img/tradeoff.jpg" alt="Compression help versus cost" /></figure>
       </div>
     </section>
 
-    <!-- 4 CODEC TABLE -->
     <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></span><span data-i18n="sl4.title">Codec comparison</span></h2>
-      <table class="tbl">
-        <thead><tr>
-          <th data-i18n="sl4.h1">Codec</th><th data-i18n="sl4.h2">Ratio</th>
-          <th data-i18n="sl4.h3">Decode speed</th><th data-i18n="sl4.h4">Best for</th>
-        </tr></thead>
-        <tbody>
-          <tr><td>LZ4 / Snappy</td><td data-i18n="sl4.low">Low</td><td data-i18n="sl4.vfast">Very fast</td><td data-i18n="sl4.r1">CPU-bound work</td></tr>
-          <tr class="star"><td>Zstd (1–22)</td><td data-i18n="sl4.med">Medium–high</td><td data-i18n="sl4.tune">Fast, tunable</td><td data-i18n="sl4.r2">Best balance — the star</td></tr>
-          <tr><td>Gzip</td><td data-i18n="sl4.high">High</td><td data-i18n="sl4.slow">Slow</td><td data-i18n="sl4.r3">Disk-bound work</td></tr>
-          <tr><td>Brotli</td><td data-i18n="sl4.vhigh">Highest</td><td data-i18n="sl4.vslow">Slowest</td><td data-i18n="sl4.r4">Long-term storage</td></tr>
-          <tr><td data-i18n="sl4.none">none (CSV)</td><td>1.0×</td><td>—</td><td data-i18n="sl4.r5">Uncompressed baseline</td></tr>
-        </tbody>
-      </table>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16l-6 8v6l-4 2v-8z"/></svg></span><span data-i18n="sl3.title">Two competing bottlenecks</span></h2>
+          <div class="stack">
+            <div class="card"><h3 data-i18n="sl3.cpu">CPU bottleneck</h3><p data-i18n="sl3.cpud">Too much decoding work — the processor cannot keep up.</p><div class="bar"><span style="width:88%"></span></div></div>
+            <div class="card"><h3 data-i18n="sl3.disk">Disk I/O bottleneck</h3><p data-i18n="sl3.diskd">Reading large uncompressed files is slow.</p><div class="bar amber"><span style="width:82%"></span></div></div>
+          </div>
+          <div class="balance-viz"><div class="bv-line"></div><div class="bv-point"><span data-i18n="sl3.point">Balance point</span></div></div>
+        </div>
+        <figure class="viz"><img src="/static/img/bottleneck.jpg" alt="CPU versus disk bottlenecks" /></figure>
+      </div>
     </section>
 
-    <!-- 5 DATA PATH -->
+    <section class="slide">
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></span><span data-i18n="sl4.title">Codec comparison</span></h2>
+          <table class="tbl">
+            <thead><tr><th data-i18n="sl4.h1">Codec</th><th data-i18n="sl4.h2">Ratio</th><th data-i18n="sl4.h3">Decode speed</th><th data-i18n="sl4.h4">Best for</th></tr></thead>
+            <tbody>
+              <tr><td>LZ4 / Snappy</td><td data-i18n="sl4.low">Low</td><td data-i18n="sl4.vfast">Very fast</td><td data-i18n="sl4.r1">CPU-bound work</td></tr>
+              <tr class="star"><td>Zstd (1–22)</td><td data-i18n="sl4.med">Medium–high</td><td data-i18n="sl4.tune">Fast, tunable</td><td data-i18n="sl4.r2">Best balance — the star</td></tr>
+              <tr><td>Gzip</td><td data-i18n="sl4.high">High</td><td data-i18n="sl4.slow">Slow</td><td data-i18n="sl4.r3">Disk-bound work</td></tr>
+              <tr><td>Brotli</td><td data-i18n="sl4.vhigh">Highest</td><td data-i18n="sl4.vslow">Slowest</td><td data-i18n="sl4.r4">Long-term storage</td></tr>
+              <tr><td data-i18n="sl4.none">none (CSV)</td><td>1.0×</td><td>—</td><td data-i18n="sl4.r5">Uncompressed baseline</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="viz"><img src="/static/img/codecs.jpg" alt="Codec spectrum" /></figure>
+      </div>
+    </section>
+
     <section class="slide">
       <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h18M15 6l6 6-6 6"/></svg></span><span data-i18n="sl5.title">The data path</span></h2>
-      <img class="hero small" src="/static/img/datapath.png" alt="Data path from disk to processing" />
+      <img class="hero small" src="/static/img/datapath.jpg" alt="Data path" />
       <div class="flow">
-        <div class="flow-step"><span class="n">1</span><strong data-i18n="path.1">Compressed disk</strong></div>
-        <span class="arw">→</span>
-        <div class="flow-step"><span class="n">2</span><strong data-i18n="path.2">CPU decompress</strong></div>
-        <span class="arw">→</span>
-        <div class="flow-step"><span class="n">3</span><strong data-i18n="path.3">In-memory columns</strong></div>
-        <span class="arw">→</span>
+        <div class="flow-step"><span class="n">1</span><strong data-i18n="path.1">Compressed disk</strong></div><span class="arw">→</span>
+        <div class="flow-step"><span class="n">2</span><strong data-i18n="path.2">CPU decompress</strong></div><span class="arw">→</span>
+        <div class="flow-step"><span class="n">3</span><strong data-i18n="path.3">In-memory columns</strong></div><span class="arw">→</span>
         <div class="flow-step"><span class="n">4</span><strong data-i18n="path.4">Process</strong></div>
       </div>
     </section>
 
-    <!-- 6 STEP 1 CODE -->
     <section class="slide">
-      <span class="step-tag" data-i18n="sl.step1">Step 1</span>
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></span><span data-i18n="sl6.title">Download the dataset</span></h2>
-      <p class="lead" data-i18n="sl6.lead">Fetch a compressed dataset from a public online repository.</p>
-      <pre class="code"><code>def download_dataset(url, dest):
+      <div class="split">
+        <div class="split-copy">
+          <span class="step-tag" data-i18n="sl.step1">Step 1</span>
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></span><span data-i18n="sl6.title">Download the dataset</span></h2>
+          <p class="lead" data-i18n="sl6.lead">Fetch a compressed dataset from a public online repository.</p>
+          <pre class="code"><code>def download_dataset(url, dest):
     with httpx.stream("GET", url, follow_redirects=True) as r:
-        r.raise_for_status()
         with open(dest, "wb") as f:
             for chunk in r.iter_bytes(64 * 1024):
-                f.write(chunk)
-                collector.add_bytes(len(chunk))
-    return dest</code></pre>
-      <p class="note" data-i18n="sl6.note">If the network fails, a synthetic dataset is generated so the demo still runs.</p>
+                f.write(chunk)</code></pre>
+          <p class="note" data-i18n="sl6.note">If the network fails, a synthetic dataset is generated so the demo still runs.</p>
+        </div>
+        <figure class="viz"><img src="/static/img/download.jpg" alt="Download dataset" /></figure>
+      </div>
     </section>
 
-    <!-- 7 STEP 2 CODE -->
     <section class="slide">
-      <span class="step-tag" data-i18n="sl.step2">Step 2</span>
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></svg></span><span data-i18n="sl7.title">Choose format and codec</span></h2>
-      <p class="lead" data-i18n="sl7.lead">The user picks the columnar format, the codec, and the Zstd level 1–22.</p>
-      <pre class="code"><code>FORMATS = ["parquet", "feather", "blosc2", "zarr", "csv"]
+      <div class="split">
+        <div class="split-copy">
+          <span class="step-tag" data-i18n="sl.step2">Step 2</span>
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="12" r="2"/></svg></span><span data-i18n="sl7.title">Choose format and codec</span></h2>
+          <p class="lead" data-i18n="sl7.lead">The user picks the columnar format, the codec, and the Zstd level 1–22.</p>
+          <pre class="code"><code>FORMATS = ["parquet", "feather", "blosc2", "zarr"]
 CODECS  = ["none", "snappy", "lz4", "zstd", "gzip", "brotli"]
-ZSTD_LEVELS = range(1, 23)   # trade-off curve</code></pre>
-      <div class="chips">
-        <span class="chip">Parquet</span><span class="chip">Feather / Arrow</span>
-        <span class="chip">Blosc2</span><span class="chip">Zarr</span>
+ZSTD_LEVELS = range(1, 23)</code></pre>
+          <div class="chips"><span class="chip">Parquet</span><span class="chip">Feather</span><span class="chip">Blosc2</span><span class="chip">Zarr</span></div>
+        </div>
+        <figure class="viz"><img src="/static/img/configure.jpg" alt="Configure format and codec" /></figure>
       </div>
     </section>
 
-    <!-- 8 STEP 3 CODE -->
     <section class="slide">
-      <span class="step-tag" data-i18n="sl.step3">Step 3</span>
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/></svg></span><span data-i18n="sl8.title">Write compressed to disk</span></h2>
-      <pre class="code"><code>def write_parquet(df, path, codec="zstd", level=5):
-    kwargs = {"compression": parquet_compression(codec)}
-    if codec == "zstd":
-        kwargs["compression_level"] = level
-    table = pa.Table.from_pandas(df, preserve_index=False)
-    pq.write_table(table, path, **kwargs)
-    return path.stat().st_size          # measure real size</code></pre>
-      <div class="callout" data-i18n="sl8.note">Compression ratio = original size ÷ compressed size.</div>
+      <div class="split">
+        <div class="split-copy">
+          <span class="step-tag" data-i18n="sl.step3">Step 3</span>
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/></svg></span><span data-i18n="sl8.title">Write compressed to disk</span></h2>
+          <pre class="code"><code>pq.write_table(table, path,
+    compression="ZSTD",
+    compression_level=level)
+return path.stat().st_size</code></pre>
+          <div class="callout" data-i18n="sl8.note">Compression ratio = original size ÷ compressed size.</div>
+        </div>
+        <figure class="viz"><img src="/static/img/write.jpg" alt="Write compressed to disk" /></figure>
+      </div>
     </section>
 
-    <!-- 9 STEP 4 CODE -->
     <section class="slide">
-      <span class="step-tag" data-i18n="sl.step4">Step 4</span>
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span><span data-i18n="sl9.title">CPU decompresses on read</span></h2>
-      <p class="lead" data-i18n="sl9.lead">Columnar formats let us read only the columns we need.</p>
-      <pre class="code"><code>with timed_stage(collector, "read"):
-    t0 = time.perf_counter()
-    loaded = read_frame(out, fmt=fmt, columns=["fare", "tip"])
-    read_seconds = time.perf_counter() - t0</code></pre>
-      <p class="note" data-i18n="sl9.note">This is where the CPU cost of compression appears.</p>
+      <div class="split">
+        <div class="split-copy">
+          <span class="step-tag" data-i18n="sl.step4">Step 4</span>
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span><span data-i18n="sl9.title">CPU decompresses on read</span></h2>
+          <p class="lead" data-i18n="sl9.lead">Columnar formats let us read only the columns we need.</p>
+          <pre class="code"><code>loaded = read_frame(out, fmt=fmt,
+    columns=["fare", "tip"])</code></pre>
+          <p class="note" data-i18n="sl9.note">This is where the CPU cost of compression appears.</p>
+        </div>
+        <figure class="viz"><img src="/static/img/decompress.jpg" alt="CPU decompress" /></figure>
+      </div>
     </section>
 
-    <!-- 10 STEP 5 CODE -->
     <section class="slide">
-      <span class="step-tag" data-i18n="sl.step5">Step 5</span>
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 20V10M9 20V4M15 20v-7M21 20V7"/></svg></span><span data-i18n="sl10.title">Process in memory</span></h2>
-      <pre class="code"><code>def light_analytics(df):
+      <div class="split">
+        <div class="split-copy">
+          <span class="step-tag" data-i18n="sl.step5">Step 5</span>
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 20V10M9 20V4M15 20v-7M21 20V7"/></svg></span><span data-i18n="sl10.title">Process in memory</span></h2>
+          <pre class="code"><code>def light_analytics(df):
     sub = df[["fare", "tip", "distance_km"]]
-    return {
-        "rows": len(df),
-        "sum":  float(sub.sum().sum()),
-        "mean": float(sub.mean().mean()),
-    }</code></pre>
-      <div class="callout" data-i18n="sl10.note">The same analytics run for every codec, so the comparison is fair.</div>
-    </section>
-
-    <!-- 11 METRICS -->
-    <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span><span data-i18n="sl11.title">Metrics we capture</span></h2>
-      <div class="grid5">
-        <div class="metric"><span class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><strong data-i18n="sl11.m1">Throughput</strong><span data-i18n="sl11.m1d">MB/s processed</span></div>
-        <div class="metric"><span class="ico"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg></span><strong data-i18n="sl11.m2">CPU usage</strong><span data-i18n="sl11.m2d">percent while decoding</span></div>
-        <div class="metric"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><strong data-i18n="sl11.m3">Disk wait</strong><span data-i18n="sl11.m3d">I/O stall percent</span></div>
-        <div class="metric"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="9" rx="1"/><path d="M7 8V5M12 8V5M17 8V5"/></svg></span><strong data-i18n="sl11.m4">Peak memory</strong><span data-i18n="sl11.m4d">maximum RAM used</span></div>
-        <div class="metric"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16v5H4zM4 13h16v5H4z"/></svg></span><strong data-i18n="sl11.m5">Ratio</strong><span data-i18n="sl11.m5d">original ÷ compressed</span></div>
-      </div>
-      <pre class="code small"><code>snap = MetricSnapshot(
-    cpu_percent      = proc.cpu_percent(),
-    disk_wait_percent= psutil.cpu_times_percent().iowait,
-    rss_mb           = proc.memory_info().rss / 1024**2,
-    throughput_mb_s  = bytes_done / 1024**2 / elapsed,
-)</code></pre>
-    </section>
-
-    <!-- 12 BALANCE CHART -->
-    <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg></span><span data-i18n="sl12.title">Finding the balance point</span></h2>
-      <p class="lead" data-i18n="sl12.lead">Plot CPU% against disk-wait% across Zstd levels. Where the two lines meet is the sweet spot.</p>
-      <div class="cross">
-        <svg viewBox="0 0 400 160" preserveAspectRatio="none">
-          <polyline class="l-cpu" points="10,140 80,120 150,95 220,65 290,38 380,18" />
-          <polyline class="l-disk" points="10,20 80,42 150,68 220,95 290,120 380,140" />
-          <circle class="x" cx="185" cy="81" r="6" />
-        </svg>
-        <div class="legend">
-          <span><i class="dot green"></i><span data-i18n="chart.cpu">CPU %</span></span>
-          <span><i class="dot amber"></i><span data-i18n="chart.disk">Disk wait %</span></span>
-          <span><i class="dot white"></i><span data-i18n="sl3.point">Balance point</span></span>
+    return {"mean": float(sub.mean().mean())}</code></pre>
+          <div class="callout" data-i18n="sl10.note">The same analytics run for every codec, so the comparison is fair.</div>
         </div>
+        <figure class="viz"><img src="/static/img/process.jpg" alt="In-memory processing" /></figure>
       </div>
     </section>
 
-    <!-- 13 RESULTS -->
     <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg></span><span data-i18n="sl13.title">Measured results</span></h2>
-      <table class="tbl">
-        <thead><tr>
-          <th data-i18n="sl4.h1">Codec</th><th data-i18n="th.ratio">Ratio</th>
-          <th data-i18n="th.total">Total (s)</th><th data-i18n="th.mbs">MB/s</th>
-          <th data-i18n="sl13.speed">Speedup</th>
-        </tr></thead>
-        <tbody>
-          <tr><td>none (CSV)</td><td>1.00×</td><td>0.152</td><td>54</td><td>1.0×</td></tr>
-          <tr><td>snappy</td><td>1.84×</td><td>0.073</td><td>22</td><td>2.1×</td></tr>
-          <tr class="star"><td>lz4</td><td>1.84×</td><td>0.019</td><td>178</td><td>8.0×</td></tr>
-          <tr><td>zstd L5</td><td>2.05×</td><td>0.024</td><td>~100</td><td>6.5×</td></tr>
-          <tr><td>gzip</td><td>2.09×</td><td>0.046</td><td>~60</td><td>3.3×</td></tr>
-        </tbody>
-      </table>
-      <p class="note" data-i18n="sl13.note">Measured on this laptop with an SSD. On slower disks the winner shifts toward higher Zstd levels.</p>
-    </section>
-
-    <!-- 14 RECOMMENDATION -->
-    <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.9H22l-6 4.4 2.3 7-6.3-4.6L5.7 20l2.3-7-6-4.4h7.6z"/></svg></span><span data-i18n="sl14.title">Recommendation</span></h2>
-      <div class="big-quote">
-        <p data-i18n="sl14.quote">On this machine, LZ4 on Parquet gave the best wall-clock time (about 8× faster than uncompressed CSV), because decoding is cheap and the files are already small enough that heavier compression does not pay off.</p>
-      </div>
-      <div class="callout" data-i18n="sl14.note">When storage is slow or data is much larger, Zstd levels 3–9 usually win instead.</div>
-    </section>
-
-    <!-- 15 MODERN STACK -->
-    <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span data-i18n="sl15.title">Bcolz is old — use the modern stack</span></h2>
-      <div class="two">
-        <div class="card warn">
-          <h3 data-i18n="sl15.old">Legacy</h3>
-          <p><strong>Bcolz</strong> — <span data-i18n="sl15.oldd">no longer actively maintained</span></p>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span><span data-i18n="sl11.title">Metrics we capture</span></h2>
+          <div class="grid5 compact">
+            <div class="metric"><strong data-i18n="sl11.m1">Throughput</strong><span data-i18n="sl11.m1d">MB/s processed</span></div>
+            <div class="metric"><strong data-i18n="sl11.m2">CPU usage</strong><span data-i18n="sl11.m2d">percent while decoding</span></div>
+            <div class="metric"><strong data-i18n="sl11.m3">Disk wait</strong><span data-i18n="sl11.m3d">I/O stall percent</span></div>
+            <div class="metric"><strong data-i18n="sl11.m4">Peak memory</strong><span data-i18n="sl11.m4d">maximum RAM used</span></div>
+            <div class="metric"><strong data-i18n="sl11.m5">Ratio</strong><span data-i18n="sl11.m5d">original ÷ compressed</span></div>
+          </div>
         </div>
-        <div class="card good">
-          <h3 data-i18n="sl15.new">Modern replacements</h3>
-          <ul class="ticks">
-            <li><strong>Parquet</strong> — <span data-i18n="sl15.p">columnar analytics standard</span></li>
-            <li><strong>Arrow / Feather</strong> — <span data-i18n="sl15.a">very fast in memory</span></li>
-            <li><strong>Blosc2</strong> — <span data-i18n="sl15.b">multi-threaded decompression</span></li>
-            <li><strong>Zarr</strong> — <span data-i18n="sl15.z">chunked N-dimensional arrays</span></li>
-          </ul>
-        </div>
+        <figure class="viz"><img src="/static/img/metrics.jpg" alt="Metrics gauges" /></figure>
       </div>
     </section>
 
-    <!-- 16 THEORY -->
     <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><span data-i18n="sl16.title">Why theory says this happens</span></h2>
-      <div class="two">
-        <div class="card">
-          <h3>Amdahl's Law</h3>
-          <p data-i18n="sl16.a">Once disk time shrinks, the remaining decode work dominates total time — so more compression stops helping.</p>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg></span><span data-i18n="sl12.title">Finding the balance point</span></h2>
+          <p class="lead" data-i18n="sl12.lead">Plot CPU% against disk-wait% across Zstd levels. Where the two lines meet is the sweet spot.</p>
+          <div class="legend">
+            <span><i class="dot green"></i><span data-i18n="chart.cpu">CPU %</span></span>
+            <span><i class="dot amber"></i><span data-i18n="chart.disk">Disk wait %</span></span>
+            <span><i class="dot white"></i><span data-i18n="sl3.point">Balance point</span></span>
+          </div>
         </div>
-        <div class="card">
-          <h3>Roofline model</h3>
-          <p data-i18n="sl16.r">Performance is capped by bandwidth or by compute. The best codec sits on the ridge between the two.</p>
-        </div>
+        <figure class="viz"><img src="/static/img/balance.jpg" alt="Balance point chart" /></figure>
       </div>
-      <div class="callout" data-i18n="sl16.t">Multi-threaded decompression (Blosc2, Zstd) pushes the CPU limit higher by using more cores.</div>
     </section>
 
-    <!-- API OVERVIEW -->
     <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h14"/><circle cx="18" cy="12" r="2"/></svg></span><span data-i18n="slApi1.title">What is the API?</span></h2>
-      <p class="lead" data-i18n="slApi1.lead">The dashboard talks to the server through small HTTP commands. Swagger at /docs lets you try them by hand.</p>
-      <div class="two">
-        <div class="card good">
-          <h3 data-i18n="slApi1.ui">Web UI</h3>
-          <p data-i18n="slApi1.uid">Buttons on the dashboard call these APIs. Charts read /api/state every 0.5s.</p>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg></span><span data-i18n="sl13.title">Measured results</span></h2>
+          <table class="tbl">
+            <thead><tr><th data-i18n="sl4.h1">Codec</th><th data-i18n="th.ratio">Ratio</th><th data-i18n="th.total">Total (s)</th><th data-i18n="sl13.speed">Speedup</th></tr></thead>
+            <tbody>
+              <tr><td>none (CSV)</td><td>1.00×</td><td>0.152</td><td>1.0×</td></tr>
+              <tr class="star"><td>lz4</td><td>1.84×</td><td>0.019</td><td>8.0×</td></tr>
+              <tr><td>zstd L5</td><td>2.05×</td><td>0.024</td><td>6.5×</td></tr>
+              <tr><td>gzip</td><td>2.09×</td><td>0.046</td><td>3.3×</td></tr>
+            </tbody>
+          </table>
+          <p class="note" data-i18n="sl13.note">Measured on this laptop with an SSD. On slower disks the winner shifts toward higher Zstd levels.</p>
         </div>
-        <div class="card">
-          <h3 data-i18n="slApi1.docs">Swagger /docs</h3>
-          <p data-i18n="slApi1.docsd">Open /docs to see every route, send a test request, and read the JSON reply.</p>
-        </div>
+        <figure class="viz"><img src="/static/img/speedup.jpg" alt="Speedup comparison" /></figure>
       </div>
-      <pre class="code small"><code>Browser  →  POST /api/benchmark  →  FastAPI server
-         ←  { "ok": true } then poll GET /api/state</code></pre>
-      <div class="callout" data-i18n="slApi1.note">Pages: GET / (dashboard) · GET /slides (presentation) · GET /docs (API explorer)</div>
     </section>
 
-    <!-- API ENDPOINTS -->
     <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span data-i18n="slApi2.title">API endpoints explained</span></h2>
-      <table class="tbl api-tbl">
-        <thead>
-          <tr>
-            <th data-i18n="slApi2.h1">Method</th>
-            <th data-i18n="slApi2.h2">Path</th>
-            <th data-i18n="slApi2.h3">What it does</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="method get">GET</span></td>
-            <td><code>/api/state</code></td>
-            <td data-i18n="slApi2.state">Live status, message, CPU/disk samples, latest results</td>
-          </tr>
-          <tr>
-            <td><span class="method get">GET</span></td>
-            <td><code>/api/results</code></td>
-            <td data-i18n="slApi2.results">Saved benchmark JSON (matrix, sweep, recommendation)</td>
-          </tr>
-          <tr>
-            <td><span class="method get">GET</span></td>
-            <td><code>/api/codecs</code></td>
-            <td data-i18n="slApi2.codecs">Short guide for each codec (ratio, decode speed, use case)</td>
-          </tr>
-          <tr>
-            <td><span class="method post">POST</span></td>
-            <td><code>/api/download</code></td>
-            <td data-i18n="slApi2.download">Download a public dataset (or create synthetic data)</td>
-          </tr>
-          <tr>
-            <td><span class="method post">POST</span></td>
-            <td><code>/api/ingest</code></td>
-            <td data-i18n="slApi2.ingest">Write + read + process with your format / codec / level</td>
-          </tr>
-          <tr class="star">
-            <td><span class="method post">POST</span></td>
-            <td><code>/api/benchmark</code></td>
-            <td data-i18n="slApi2.bench">Run matrix, Zstd sweep, or full suite — then recommend the best</td>
-          </tr>
-        </tbody>
-      </table>
-      <pre class="code small"><code>POST /api/benchmark
-{ "mode": "full", "fmt": "parquet", "threads": 4, "max_rows": 80000 }</code></pre>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.9H22l-6 4.4 2.3 7-6.3-4.6L5.7 20l2.3-7-6-4.4h7.6z"/></svg></span><span data-i18n="sl14.title">Recommendation</span></h2>
+          <div class="big-quote"><p data-i18n="sl14.quote">On this machine, LZ4 on Parquet gave the best wall-clock time (about 8× faster than uncompressed CSV), because decoding is cheap and the files are already small enough that heavier compression does not pay off.</p></div>
+          <div class="callout" data-i18n="sl14.note">When storage is slow or data is much larger, Zstd levels 3–9 usually win instead.</div>
+        </div>
+        <figure class="viz"><img src="/static/img/pipeline.jpg" alt="End to end pipeline" /></figure>
+      </div>
     </section>
 
-    <!-- HOW TO RUN -->
     <section class="slide">
-      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 5l10 7-10 7z"/></svg></span><span data-i18n="sl17.title">How to run the app</span></h2>
-      <pre class="code"><code>cd Week-5
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000</code></pre>
-      <ol class="run-steps">
-        <li data-i18n="sl17.s1">Open http://127.0.0.1:8000</li>
-        <li data-i18n="sl17.s2">Click Download dataset</li>
-        <li data-i18n="sl17.s3">Pick a format, a codec, and drag the Zstd slider</li>
-        <li data-i18n="sl17.s4">Click Full benchmark and watch the live charts</li>
-        <li data-i18n="sl17.s5">Read the recommendation banner</li>
-      </ol>
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span data-i18n="sl15.title">Bcolz is old — use the modern stack</span></h2>
+          <div class="stack">
+            <div class="card warn"><h3 data-i18n="sl15.old">Legacy</h3><p><strong>Bcolz</strong> — <span data-i18n="sl15.oldd">no longer actively maintained</span></p></div>
+            <div class="card good"><h3 data-i18n="sl15.new">Modern replacements</h3>
+              <ul class="ticks">
+                <li><strong>Parquet</strong> — <span data-i18n="sl15.p">columnar analytics standard</span></li>
+                <li><strong>Arrow / Feather</strong> — <span data-i18n="sl15.a">very fast in memory</span></li>
+                <li><strong>Blosc2</strong> — <span data-i18n="sl15.b">multi-threaded decompression</span></li>
+                <li><strong>Zarr</strong> — <span data-i18n="sl15.z">chunked N-dimensional arrays</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <figure class="viz"><img src="/static/img/modern.jpg" alt="Modern stack" /></figure>
+      </div>
     </section>
 
-    <!-- 18 SUMMARY -->
+    <section class="slide">
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><span data-i18n="sl16.title">Why theory says this happens</span></h2>
+          <div class="stack">
+            <div class="card"><h3>Amdahl's Law</h3><p data-i18n="sl16.a">Once disk time shrinks, the remaining decode work dominates total time — so more compression stops helping.</p></div>
+            <div class="card"><h3>Roofline model</h3><p data-i18n="sl16.r">Performance is capped by bandwidth or by compute. The best codec sits on the ridge between the two.</p></div>
+          </div>
+          <div class="callout" data-i18n="sl16.t">Multi-threaded decompression (Blosc2, Zstd) pushes the CPU limit higher by using more cores.</div>
+        </div>
+        <figure class="viz"><img src="/static/img/theory.jpg" alt="Amdahl and Roofline" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h14"/><circle cx="18" cy="12" r="2"/></svg></span><span data-i18n="slApi1.title">What is the API?</span></h2>
+          <p class="lead" data-i18n="slApi1.lead">The dashboard talks to the server through small HTTP commands. Swagger at /docs lets you try them by hand.</p>
+          <div class="stack">
+            <div class="card good"><h3 data-i18n="slApi1.ui">Web UI</h3><p data-i18n="slApi1.uid">Buttons on the dashboard call these APIs. Charts read /api/state every 0.5s.</p></div>
+            <div class="card"><h3 data-i18n="slApi1.docs">Swagger /docs</h3><p data-i18n="slApi1.docsd">Open /docs to see every route, send a test request, and read the JSON reply.</p></div>
+          </div>
+        </div>
+        <figure class="viz"><img src="/static/img/api.jpg" alt="API client and server" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span data-i18n="slApi2.title">API endpoints explained</span></h2>
+          <table class="tbl api-tbl">
+            <thead><tr><th data-i18n="slApi2.h1">Method</th><th data-i18n="slApi2.h2">Path</th><th data-i18n="slApi2.h3">What it does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="method get">GET</span></td><td><code>/api/state</code></td><td data-i18n="slApi2.state">Live status, message, CPU/disk samples, latest results</td></tr>
+              <tr><td><span class="method get">GET</span></td><td><code>/api/results</code></td><td data-i18n="slApi2.results">Saved benchmark JSON (matrix, sweep, recommendation)</td></tr>
+              <tr><td><span class="method post">POST</span></td><td><code>/api/download</code></td><td data-i18n="slApi2.download">Download a public dataset (or create synthetic data)</td></tr>
+              <tr><td><span class="method post">POST</span></td><td><code>/api/ingest</code></td><td data-i18n="slApi2.ingest">Write + read + process with your format / codec / level</td></tr>
+              <tr class="star"><td><span class="method post">POST</span></td><td><code>/api/benchmark</code></td><td data-i18n="slApi2.bench">Run matrix, Zstd sweep, or full suite — then recommend the best</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="viz"><img src="/static/img/api.jpg" alt="API endpoints" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="split">
+        <div class="split-copy">
+          <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 5l10 7-10 7z"/></svg></span><span data-i18n="sl17.title">How to run the app</span></h2>
+          <pre class="code"><code>uvicorn app.main:app --host 0.0.0.0 --port 8000</code></pre>
+          <ol class="run-steps">
+            <li data-i18n="sl17.s1">Open http://127.0.0.1:8000</li>
+            <li data-i18n="sl17.s2">Click Download dataset</li>
+            <li data-i18n="sl17.s3">Pick a format, a codec, and drag the Zstd slider</li>
+            <li data-i18n="sl17.s4">Click Full benchmark and watch the live charts</li>
+            <li data-i18n="sl17.s5">Read the recommendation banner</li>
+          </ol>
+        </div>
+        <figure class="viz"><img src="/static/img/configure.jpg" alt="Run the app" /></figure>
+      </div>
+    </section>
+
     <section class="slide cover">
       <span class="kicker" data-i18n="sl18.kicker">Summary</span>
       <h1 data-i18n="sl18.title">Balance, not maximum compression</h1>
+      <img class="hero small" src="/static/img/summary.jpg" alt="Summary balance" />
       <div class="sum">
         <div class="sum-item"><span class="n">1</span><span data-i18n="sl18.a">Compression trades disk I/O for CPU work.</span></div>
         <div class="sum-item"><span class="n">2</span><span data-i18n="sl18.b">Columnar formats read only the needed columns.</span></div>
