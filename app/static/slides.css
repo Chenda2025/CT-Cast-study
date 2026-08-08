@@ -207,6 +207,23 @@ code, pre { font-family: var(--font-mono) !important; }
 .tbl th { color: var(--muted); font-weight: 500; }
 .tbl tr.star td { background: rgba(62, 207, 142, 0.1); color: var(--accent); }
 
+.method {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.18rem 0.45rem;
+  border: 1px solid var(--line);
+}
+.method.get { color: var(--accent); border-color: rgba(62, 207, 142, 0.55); }
+.method.post { color: var(--accent2); border-color: rgba(240, 180, 41, 0.55); }
+.api-tbl code {
+  font-size: 0.88em;
+  color: var(--ink);
+}
+.api-tbl td:nth-child(2) { white-space: nowrap; }
+
 .code {
   background: #0a1310;
   border: 1px solid var(--line);

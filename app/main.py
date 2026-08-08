@@ -21,7 +21,15 @@ from app.recommend import recommend_best
 APP_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(APP_DIR / "templates"))
 
-app = FastAPI(title="Compression Trade-Offs Case Study", version="1.0.0")
+app = FastAPI(
+    title="Compression Trade-Offs Case Study",
+    version="1.0.0",
+    description=(
+        "Case Study 2 API: download data, ingest with a chosen codec/format, "
+        "run benchmarks, and poll live CPU / disk / throughput metrics. "
+        "UI at `/`, slides at `/slides`, this explorer at `/docs`."
+    ),
+)
 app.mount("/static", StaticFiles(directory=str(APP_DIR / "static")), name="static")
 
 # Shared job state
@@ -93,8 +101,9 @@ def _ensure_df(max_rows: int | None):
     return df
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse, summary="Dashboard UI")
 async def index(request: Request):
+    """Main bilingual dashboard: configure compression and watch live metrics."""
     # Starlette 1.x: TemplateResponse(request, name, context)
     return templates.TemplateResponse(
         request,
@@ -107,13 +116,15 @@ async def index(request: Request):
     )
 
 
-@app.get("/slides", response_class=HTMLResponse)
+@app.get("/slides", response_class=HTMLResponse, summary="Presentation slides")
 async def slides(request: Request):
+    """Step-by-step presentation (English / Khmer) explaining the case study."""
     return templates.TemplateResponse(request, "slides.html")
 
 
-@app.get("/api/state")
+@app.get("/api/state", summary="Live job + metric samples")
 async def get_state():
+    """Return current job status, progress message, live metric samples, and latest results."""
     with _lock:
         live = _collector.live_tail(80) if _collector else _state.get("live", [])
         return {
@@ -122,8 +133,9 @@ async def get_state():
         }
 
 
-@app.get("/api/results")
+@app.get("/api/results", summary="Saved benchmark results")
 async def get_results():
+    """Return benchmarks/results.json when present, otherwise in-memory results."""
     path = BENCHMARKS_DIR / "results.json"
     if path.exists():
         return json.loads(path.read_text(encoding="utf-8"))
@@ -134,8 +146,9 @@ async def get_results():
         }
 
 
-@app.post("/api/download")
+@app.post("/api/download", summary="Download dataset")
 async def api_download():
+    """Start a background download of a public CSV (falls back to synthetic data)."""
     if _state["status"] == "running":
         return JSONResponse({"ok": False, "error": "Job already running"}, status_code=409)
 
@@ -164,8 +177,9 @@ async def api_download():
     return {"ok": True}
 
 
-@app.post("/api/ingest")
+@app.post("/api/ingest", summary="Ingest with one codec")
 async def api_ingest(body: IngestRequest):
+    """Write compressed data, read it back, run light analytics, and return timing metrics."""
     if _state["status"] == "running":
         return JSONResponse({"ok": False, "error": "Job already running"}, status_code=409)
 
@@ -202,8 +216,9 @@ async def api_ingest(body: IngestRequest):
     return {"ok": True}
 
 
-@app.post("/api/benchmark")
+@app.post("/api/benchmark", summary="Run codec / Zstd benchmark")
 async def api_benchmark(body: BenchmarkRequest):
+    """Run matrix, zstd_sweep, or full suite in the background. Poll /api/state for progress."""
     if _state["status"] == "running":
         return JSONResponse({"ok": False, "error": "Job already running"}, status_code=409)
 
@@ -272,8 +287,9 @@ async def api_benchmark(body: BenchmarkRequest):
     return {"ok": True}
 
 
-@app.get("/api/codecs")
+@app.get("/api/codecs", summary="Codec trade-off guide")
 async def api_codecs():
+    """Return a short description of each codec: ratio, decode speed, and typical regime."""
     from app.codecs import describe_codec
 
     return {c: describe_codec(c) for c in CODECS}

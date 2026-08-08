@@ -280,7 +280,74 @@ ZSTD_LEVELS = range(1, 23)   # trade-off curve</code></pre>
       <div class="callout" data-i18n="sl16.t">Multi-threaded decompression (Blosc2, Zstd) pushes the CPU limit higher by using more cores.</div>
     </section>
 
-    <!-- 17 HOW TO RUN -->
+    <!-- API OVERVIEW -->
+    <section class="slide">
+      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h14"/><circle cx="18" cy="12" r="2"/></svg></span><span data-i18n="slApi1.title">What is the API?</span></h2>
+      <p class="lead" data-i18n="slApi1.lead">The dashboard talks to the server through small HTTP commands. Swagger at /docs lets you try them by hand.</p>
+      <div class="two">
+        <div class="card good">
+          <h3 data-i18n="slApi1.ui">Web UI</h3>
+          <p data-i18n="slApi1.uid">Buttons on the dashboard call these APIs. Charts read /api/state every 0.5s.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="slApi1.docs">Swagger /docs</h3>
+          <p data-i18n="slApi1.docsd">Open /docs to see every route, send a test request, and read the JSON reply.</p>
+        </div>
+      </div>
+      <pre class="code small"><code>Browser  →  POST /api/benchmark  →  FastAPI server
+         ←  { "ok": true } then poll GET /api/state</code></pre>
+      <div class="callout" data-i18n="slApi1.note">Pages: GET / (dashboard) · GET /slides (presentation) · GET /docs (API explorer)</div>
+    </section>
+
+    <!-- API ENDPOINTS -->
+    <section class="slide">
+      <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span data-i18n="slApi2.title">API endpoints explained</span></h2>
+      <table class="tbl api-tbl">
+        <thead>
+          <tr>
+            <th data-i18n="slApi2.h1">Method</th>
+            <th data-i18n="slApi2.h2">Path</th>
+            <th data-i18n="slApi2.h3">What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="method get">GET</span></td>
+            <td><code>/api/state</code></td>
+            <td data-i18n="slApi2.state">Live status, message, CPU/disk samples, latest results</td>
+          </tr>
+          <tr>
+            <td><span class="method get">GET</span></td>
+            <td><code>/api/results</code></td>
+            <td data-i18n="slApi2.results">Saved benchmark JSON (matrix, sweep, recommendation)</td>
+          </tr>
+          <tr>
+            <td><span class="method get">GET</span></td>
+            <td><code>/api/codecs</code></td>
+            <td data-i18n="slApi2.codecs">Short guide for each codec (ratio, decode speed, use case)</td>
+          </tr>
+          <tr>
+            <td><span class="method post">POST</span></td>
+            <td><code>/api/download</code></td>
+            <td data-i18n="slApi2.download">Download a public dataset (or create synthetic data)</td>
+          </tr>
+          <tr>
+            <td><span class="method post">POST</span></td>
+            <td><code>/api/ingest</code></td>
+            <td data-i18n="slApi2.ingest">Write + read + process with your format / codec / level</td>
+          </tr>
+          <tr class="star">
+            <td><span class="method post">POST</span></td>
+            <td><code>/api/benchmark</code></td>
+            <td data-i18n="slApi2.bench">Run matrix, Zstd sweep, or full suite — then recommend the best</td>
+          </tr>
+        </tbody>
+      </table>
+      <pre class="code small"><code>POST /api/benchmark
+{ "mode": "full", "fmt": "parquet", "threads": 4, "max_rows": 80000 }</code></pre>
+    </section>
+
+    <!-- HOW TO RUN -->
     <section class="slide">
       <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 5l10 7-10 7z"/></svg></span><span data-i18n="sl17.title">How to run the app</span></h2>
       <pre class="code"><code>cd Week-5

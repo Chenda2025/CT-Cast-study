@@ -109,6 +109,26 @@ const SLIDES_I18N = {
     "sl16.t":
       "Multi-threaded decompression (Blosc2, Zstd) pushes the CPU limit higher by using more cores.",
 
+    "slApi1.title": "What is the API?",
+    "slApi1.lead":
+      "The dashboard talks to the server through small HTTP commands. Swagger at /docs lets you try them by hand.",
+    "slApi1.ui": "Web UI",
+    "slApi1.uid": "Buttons on the dashboard call these APIs. Charts read /api/state every 0.5s.",
+    "slApi1.docs": "Swagger /docs",
+    "slApi1.docsd": "Open /docs to see every route, send a test request, and read the JSON reply.",
+    "slApi1.note": "Pages: GET / (dashboard) · GET /slides (presentation) · GET /docs (API explorer)",
+
+    "slApi2.title": "API endpoints explained",
+    "slApi2.h1": "Method",
+    "slApi2.h2": "Path",
+    "slApi2.h3": "What it does",
+    "slApi2.state": "Live status, message, CPU/disk samples, latest results",
+    "slApi2.results": "Saved benchmark JSON (matrix, sweep, recommendation)",
+    "slApi2.codecs": "Short guide for each codec (ratio, decode speed, use case)",
+    "slApi2.download": "Download a public dataset (or create synthetic data)",
+    "slApi2.ingest": "Write + read + process with your format / codec / level",
+    "slApi2.bench": "Run matrix, Zstd sweep, or full suite — then recommend the best",
+
     "sl17.title": "How to run the app",
     "sl17.s1": "Open http://127.0.0.1:8000",
     "sl17.s2": "Click Download dataset",
@@ -233,6 +253,26 @@ const SLIDES_I18N = {
       "សមត្ថភាពត្រូវបានកំណត់ដោយ bandwidth ឬដោយការគណនា។ ក្បួនល្អបំផុតស្ថិតនៅចំណុចកណ្តាលរវាងទាំងពីរ។",
     "sl16.t":
       "ការរំសាយបង្ហាប់បែប multi-thread (Blosc2, Zstd) បង្កើនដែនកំណត់ CPU ដោយប្រើ core ច្រើន។",
+
+    "slApi1.title": "API គឺជាអ្វី?",
+    "slApi1.lead":
+      "ផ្ទាំងគ្រប់គ្រងនិយាយជាមួយ server តាមពាក្យបញ្ជា HTTP តូចៗ។ Swagger នៅ /docs ឲ្យអ្នកសាកល្បងដោយដៃ។",
+    "slApi1.ui": "ផ្ទាំងគេហទំព័រ",
+    "slApi1.uid": "ប៊ូតុងលើ dashboard ហៅ API ទាំងនេះ។ ក្រាហ្វអាន /api/state រៀងរាល់ ០.៥ វិនាទី។",
+    "slApi1.docs": "Swagger /docs",
+    "slApi1.docsd": "បើក /docs ដើម្បីមើល route ទាំងអស់ ផ្ញើសំណើសាកល្បង និងអានចម្លើយ JSON។",
+    "slApi1.note": "ទំព័រ៖ GET / (ផ្ទាំងគ្រប់គ្រង) · GET /slides (បទបង្ហាញ) · GET /docs (រុករក API)",
+
+    "slApi2.title": "ពន្យល់ API endpoints",
+    "slApi2.h1": "វិធី",
+    "slApi2.h2": "ផ្លូវ",
+    "slApi2.h3": "ធ្វើអ្វី",
+    "slApi2.state": "ស្ថានភាពផ្ទាល់ សារ គំរូ CPU/ថាស និងលទ្ធផលថ្មីៗ",
+    "slApi2.results": "JSON តេស្តដែលរក្សាទុក (matrix, sweep, អនុសាសន៍)",
+    "slApi2.codecs": "ការណែនាំខ្លីសម្រាប់ក្បួននីមួយៗ (អត្រា ល្បឿន decode ករណីប្រើ)",
+    "slApi2.download": "ទាញយក dataset សាធារណៈ (ឬបង្កើតទិន្នន័យសំយោគ)",
+    "slApi2.ingest": "សរសេរ + អាន + ដំណើរការ តាមទម្រង់ / ក្បួន / កម្រិតរបស់អ្នក",
+    "slApi2.bench": "ដំណើរការ matrix, Zstd sweep ឬតេស្តពេញ — រួចណែនាំមួយល្អបំផុត",
 
     "sl17.title": "របៀបដំណើរការកម្មវិធី",
     "sl17.s1": "បើក http://127.0.0.1:8000",
