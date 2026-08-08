@@ -95,10 +95,11 @@ def _ensure_df(max_rows: int | None):
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    # Starlette 1.x: TemplateResponse(request, name, context)
     return templates.TemplateResponse(
+        request,
         "index.html",
         {
-            "request": request,
             "codecs": CODECS,
             "formats": FORMATS,
             "zstd_levels": ZSTD_LEVELS,
@@ -108,7 +109,7 @@ async def index(request: Request):
 
 @app.get("/slides", response_class=HTMLResponse)
 async def slides(request: Request):
-    return templates.TemplateResponse("slides.html", {"request": request})
+    return templates.TemplateResponse(request, "slides.html")
 
 
 @app.get("/api/state")
