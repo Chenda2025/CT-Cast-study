@@ -1,0 +1,12 @@
+data/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.env
+.DS_Store
+benchmarks/results.json
+*.b2nd
+*.feather
+*.parquet
