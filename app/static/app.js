@@ -160,11 +160,6 @@ function updateBalance(results) {
   balanceChart.update();
 }
 
-function updateRecommend(rec) {
-  if (!rec) return;
-  $("recommendText").textContent = rec.message || JSON.stringify(rec);
-}
-
 document.addEventListener("langchange", () => {
   [cpuChart, diskChart, thrChart].forEach((c) => {
     c.data.datasets[0].label = t(c._labelKey);
@@ -199,7 +194,6 @@ async function poll() {
       updateTable(data.results);
       updateBalance(data.results);
     }
-    if (data.recommendation) updateRecommend(data.recommendation);
     setBusy(data.status === "running");
   } catch (e) {
     console.warn(e);
